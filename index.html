@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scratch & Win - Casino Deluxe</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Arial Black', Arial, sans-serif;
+    background: radial-gradient(circle at 50% 50%, #1a1a1a, #0f0f0f);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Animated neon lights in background */
+  .neon-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
+    background-size: 600% 600%;
+    animation: gradientAnim 20s linear infinite;
+    opacity: 0.2;
+    z-index: 0;
+  }
+
+  @keyframes gradientAnim {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+  }
+
+  .container {
+    width: 400px;
+    background: linear-gradient(135deg, #2b0000, #4d0000);
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.6);
+    border: 3px solid gold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    color: gold;
+    font-size: 32px;
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px gold, 0 0 20px orange;
+  }
+  .header h2 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  .header p {
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .scratch-card {
+    width: 100%;
+    height: 280px;
+    position: relative;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 4px solid #800000;
+    box-shadow: 0 0 50px rgba(128,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.6);
+    background: radial-gradient(circle, #1a0f00, #2d1f00, #1a0f00);
+    margin-bottom: 20px;
+  }
+
+  .prize {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    transition: all 0.5s ease;
+  }
+
+  .prize-emoji {
+    font-size: 80px;
+    margin-bottom: 15px;
+    color: gold;
+    text-shadow: 0 0 20px rgba(255,215,0,0.8);
+  }
+
+  .prize-text {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ffd700;
+    text-align: center;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+  }
+
+  #scratchCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    border-radius: 21px;
+    z-index: 10;
+  }
+
+  .action {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .action button {
+    background: linear-gradient(135deg, #800000, #8b0000);
+    border: none;
+    padding: 15px 35px;
+    border-radius: 30px;
+    font-weight: 900;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(128,0,0,0.5);
+    border: 2px solid #fff;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+  }
+  .action button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(128,0,0,0.7);
+    background: linear-gradient(135deg, #8b0000, #a0522d);
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 15px;
+    color: #ffd700;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width:500px){
+    .container { width: 95vw; padding: 20px; }
+    .header h1 { font-size: 28px; }
+    .prize-emoji { font-size: 60px; }
+    .prize-text { font-size: 22px; }
+    .scratch-card { height: 220px; }
+  }
+
+  /* Gold sparkle animation */
+  @keyframes sparkle {
+    0% {transform: scale(1) rotate(0deg);}
+    50% {transform: scale(1.3) rotate(15deg);}
+    100% {transform: scale(1) rotate(0deg);}
+  }
+  .sparkle {
+    animation: sparkle 0.5s ease infinite;
+  }
+
+  /* Sad animation */
+  @keyframes sadShake {
+    0% {transform: rotate(0deg);}
+    25% {transform: rotate(-10deg);}
+    50% {transform: rotate(10deg);}
+    75% {transform: rotate(-10deg);}
+    100% {transform: rotate(0deg);}
+  }
+  .sad {
+    animation: sadShake 0.5s ease infinite;
+  }
+</style>
+</head>
+<body>
+
+<div class="neon-bg"></div>
+
+<div class="container">
+  <div class="header">
+    <h1>🎰 SCRATCH & WIN 🎰</h1>
+    <h2>GE88 CASINO</h2>
+    <p>⚡ PREMIUM JACKPOT EXPERIENCE ⚡</p>
+  </div>
+
+  <div class="scratch-card">
+    <div class="prize">
+      <div class="prize-emoji" id="prizeEmoji">🪙</div>
+      <div class="prize-text" id="prizeText"></div>
+    </div>
+    <canvas id="scratchCanvas"></canvas>
+  </div>
+
+  <div class="action">
+    <button onclick="revealAll()">🔥 REVEAL ALL 🔥</button>
+  </div>
+
+  <div class="footer">✨ SCRATCH THE GOLD TO REVEAL YOUR PRIZE ✨</div>
+</div>
+
+<script>
+  // Scratch Canvas
+  const canvas = document.getElementById('scratchCanvas');
+  const ctx = canvas.getContext('2d');
+  let isScratching=false, prevX=0, prevY=0;
+
+  function resizeCanvas(){
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width*2;
+    canvas.height = rect.height*2;
+    ctx.scale(2,2);
+    createScratchSurface();
+  }
+
+  function createScratchSurface(){
+    ctx.fillStyle = '#808080';
+    ctx.fillRect(0,0,canvas.width/2,canvas.height/2);
+  }
+
+  function scratch(e){
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX||e.touches[0].clientX) - rect.left;
+    const y = (e.clientY||e.touches[0].clientY) - rect.top;
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.lineWidth = 25;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(prevX||x, prevY||y);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    prevX = x;
+    prevY = y;
+  }
+
+  function revealAll(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+
+  canvas.addEventListener('mousedown',()=>isScratching=true);
+  canvas.addEventListener('mouseup',()=>{isScratching=false; prevX=0; prevY=0;});
+  canvas.addEventListener('mousemove',(e)=>{if(isScratching) scratch(e);});
+  canvas.addEventListener('touchstart',(e)=>{e.preventDefault(); isScratching=true; scratch(e);});
+  canvas.addEventListener('touchmove',(e)=>{e.preventDefault(); if(isScratching) scratch(e);});
+  canvas.addEventListener('touchend',()=>{isScratching=false; prevX=0; prevY=0;});
+
+  window.addEventListener('resize', resizeCanvas);
+
+  // Prize Logic
+  const prizeEmoji = document.getElementById('prizeEmoji');
+  const prizeText = document.getElementById('prizeText');
+
+  const winPrizes = [
+    {emoji:'🪙', text:'WIN 6 SGD'},
+      ];
+
+  const losePrize = {emoji:'😢', text:'TRY AGAIN'};
+
+  function pickPrize(){
+    const chance = Math.random();
+    if(chance<=0.6){ // win
+      const prize = winPrizes[Math.floor(Math.random()*winPrizes.length)];
+      prizeEmoji.textContent = prize.emoji;
+      prizeText.textContent = prize.text;
+      prizeEmoji.classList.add('sparkle');
+      prizeEmoji.classList.remove('sad');
+    }else{ // lose
+      prizeEmoji.textContent = losePrize.emoji;
+      prizeText.textContent = losePrize.text;
+      prizeEmoji.classList.add('sad');
+      prizeEmoji.classList.remove('sparkle');
+    }
+  }
+
+  window.addEventListener('load', ()=>{
+    pickPrize();
+    resizeCanvas();
+  });
+</script>
+
+</body>
+</html>
